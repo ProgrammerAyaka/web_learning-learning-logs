@@ -1,0 +1,23 @@
+{% extends 'learning_logs/base.html' %}
+
+{% block page_header %}
+    <h1>主题</h1>
+{% endblock page_header %}
+
+{% block content %}
+
+<ul class="list-group border-bottom pb-2 mb-4">
+    <!--表示无序列表的标签-->
+    {% for topic in topics %}   <!--表示循环开始-->
+        <li class="list-group-item border-0">
+            <a href="{% url 'learning_logs:topic' topic.id %}">
+                {{ topic.text }}</a> <!--用topic的txt属性替换内容-->
+        </li>
+    {% empty %}                 <!--如果是空的怎么办-->
+        <li class="list-group-item border-0">目前没有主题</li>
+    {% endfor %}                <!--表示循环结束-->
+</ul>
+
+<a href="{% url 'learning_logs:new_topic' %}">新建一个主题</a>
+
+{% endblock content %}

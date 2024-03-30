@@ -1,0 +1,16 @@
+{% extends 'learning_logs/base.html' %}  <!--继承父模板-->
+
+{% block page_header %}
+ <div class="p-3 mb-4 bg-light border rounded-3">
+    <div class="container-fluid py-4">
+        <h1 class="display-3">随时随地开始你的学习之旅</h1>
+
+        <p class="lead">创建你自己的知识库，根据主题分类它们，条理清晰。并进一步创建并编辑条目
+            ，这让你能够将自己的知识与时俱进，随时同步。构建出属于你的知识网络。
+        </p>
+
+        <a class="btn btn-primary btn-lg mt-1"
+            href="{% url 'accounts:register' %}">注册以开始使用 &raquo;</a>
+    </div>
+ </div>
+{% endblock page_header %}
