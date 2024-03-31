@@ -6,12 +6,10 @@ from .models import Topic, Entry
 from .forms import TopicForm, EntryForm
 
 
-
 def check_topic_owner(request, topic):
     """核实主题关联到的用户为当前登陆的用户"""
     if topic.owner != request.user:
         raise Http404  # 如果非用户所有，引发404错误  
-
 
 
 # Create your views here.
@@ -20,6 +18,7 @@ def index(request):
     """学习笔记的主页"""
     return render(request, 'learning_logs/index.html')
 
+
 @login_required
 def topics(request):
     """显示所有的主题"""
@@ -27,15 +26,17 @@ def topics(request):
     context = {'topics': topics}
     return render(request, 'learning_logs/topics.html', context)
 
+
 @login_required
 def topic(request, topic_id):
     """显示特定主题及其所有项目"""
     topic = Topic.objects.get(id=topic_id)
     check_topic_owner(request, topic)
-    
+
     entries = topic.entry_set.order_by('-date_added')  # 反向关联查询的一种方式，用于获取与特定topic相关联的Entry对象的集合。
     context = {'topic': topic, 'entries': entries}
     return render(request, 'learning_logs/topic.html', context)
+
 
 @login_required
 def new_topic(request):
@@ -49,12 +50,13 @@ def new_topic(request):
         if form.is_valid():  # 如果表单数据有效
             new_topic = form.save(commit=False)
             new_topic.owner = request.user
-            new_topic.save()      # 储存表单数据
+            new_topic.save()  # 储存表单数据
             return redirect('learning_logs:topics')  # 重定向到URL
-        
+
     # 显示新表单或指出表单数据无效
     context = {'form': form}
     return render(request, 'learning_logs/new_topic.html', context)
+
 
 @login_required
 def new_entry(request, topic_id):
@@ -70,9 +72,10 @@ def new_entry(request, topic_id):
             new_entry.topic = topic  # 将new_topic的主题设定为第一行从数据库中获取的主题
             new_entry.save()  # 保存到数据库中
             return redirect('learning_logs:topic', topic_id=topic_id)
-        
+
     context = {'topic': topic, 'form': form}
     return render(request, 'learning_logs/new_entry.html', context)
+
 
 @login_required
 def edit_entry(request, entry_id):
@@ -90,7 +93,6 @@ def edit_entry(request, entry_id):
         if form.is_valid():
             form.save()
             return redirect('learning_logs:topic', topic_id=topic.id)
-        
-    context = {'entry':entry, 'topic':topic, 'form':form}
+
+    context = {'entry': entry, 'topic': topic, 'form': form}
     return render(request, 'learning_logs/edit_entry.html', context)
-        

@@ -1,13 +1,19 @@
 {% extends 'learning_logs/base.html' %}
+{% load django_bootstrap5 %}
+
+{% block page_header %}
+<h1>添加一个新条目:</h1>
+{% endblock page_header %}
+
 
 {% block content %}
-<p><a href="{% url 'learning_logs:topic' topic.id %}">{{ topic }}</a></p>
+<h3><a href="{% url 'learning_logs:topic' topic.id %}">{{ topic }}</a></h3>
 
-<p>添加一个新条目:</p>
+
 <form action="{% url 'learning_logs:new_entry' topic.id %}" method="post">
     {% csrf_token %}  
-    {{ form.as_div }}
-    <button name="submit">添加条目</button>
+    {% bootstrap_form form %}
+    {% bootstrap_button button_type="submit" content="添加条目" %}
 </form>
 
 {% endblock content %}
